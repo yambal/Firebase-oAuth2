@@ -278,7 +278,7 @@ const refreshTokenToToken = (refresh_token, client_id, input_client_secret) => {
 
 const addAccessToken = (uid, client_id, expires_in, token_type) => {
 	return new Promise(function(resolve, reject) {
-		console.log(279, 'addAccessToken', uid, client_id, expires_in, token_type)
+		console.log('addAccessToken', uid, client_id, expires_in, token_type)
 		if (uid) {
 			const access_token = uid + "_" + nanoid();
 			const due = Math.floor(new Date().getTime() / 1000) + expires_in;
