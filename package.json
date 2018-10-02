@@ -1,6 +1,6 @@
 {
   "name": "yambal_firebase_oauth2",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,7 +9,8 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.3",
-    "nanoid": "^1.2.5"
+    "nanoid": "^1.2.5",
+    "pug": "^2.0.3"
   },
   "devDependencies": {},
   "repository": {
