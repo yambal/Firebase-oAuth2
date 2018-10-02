@@ -1,0 +1,48 @@
+doctype
+html(lang="ja")
+  head
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    script(src="/__/firebase/5.4.1/firebase-app.js")
+    script(src="/__/firebase/5.4.1/firebase-auth.js")
+    script(src="/__/firebase/5.4.1/firebase-database.js")
+    script(src="/__/firebase/5.4.1/firebase-messaging.js")
+    script(src="/__/firebase/5.4.1/firebase-functions.js")
+    script(src="/__/firebase/init.js")
+    //-script(src="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.js")
+    script(src="https://www.gstatic.com/firebasejs/ui/3.4.1/firebase-ui-auth__ja.js")
+    
+    title
+      |#{title}
+    //-link(type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css")
+    link(type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/3.4.1/firebase-ui-auth.css")
+    link(type="text/css" rel="stylesheet" href="/css/acountLinking.css")
+  body
+    h1
+      |#{title}
+    p
+      |#{message}
+    div#loading Loading...
+    div#loaded.hidden
+      div#user-signed-in.hidden
+        div#user-info
+          div#photo-container
+            img#photo
+          div#name
+          div#email
+          div#phone
+          div#is-new-user
+          button#sign-out Sign Out
+        div#acount-link.hidden
+          //-button#delete-account Delete account
+          form(method="post" action=authorized_uri)
+            input(type="hidden" name="response_type" value=response_type)
+            input(type="hidden" name="client_id" value=client_id)
+            input(type="hidden" name="redirect_uri" value=redirect_uri)
+            input(type="hidden" name="scope" value=scope)
+            input(type="hidden" name="state" value=state)
+            input(type="hidden" name="id_token" id="id-token")
+            input(type="submit" value="Submit")
+      div#user-signed-out.hidden
+        div#firebaseui-spa
+          div#firebaseui-container
+    script(src=authorize_js_uri)

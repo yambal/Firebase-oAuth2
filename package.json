@@ -1,7 +1,6 @@
 {
-  "name": "firebase_oauth2",
-  "version": "0.0.1",
-  "description": "",
+  "name": "yambal_firebase_oauth2",
+  "version": "0.0.2",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,5 +10,15 @@
   "dependencies": {
     "express": "^4.16.3",
     "nanoid": "^1.2.5"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yambal/Firebase-oAuth2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yambal/Firebase-oAuth2/issues"
+  },
+  "homepage": "https://github.com/yambal/Firebase-oAuth2#readme",
+  "description": ""
 }

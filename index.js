@@ -43,6 +43,7 @@ AcountLinkApp.get("/" + APP_URI + "/test", (req, res) => {
 	res.json({ message: "ok" });
 });
 
+// 認証画面を描画する
 AcountLinkApp.get("/" + APP_URI + "/authorize", (req, res) => {
 	return res.render("authorize", {
 		authorized_uri: "/" + APP_URI + "/authorized",
@@ -85,7 +86,7 @@ AcountLinkApp.post("/" + APP_URI + "/authorized", (req, res) => {
 				decodeURIComponent(authorization_code) +
 				"&state=" +
 				decodeURIComponent(body.state);
-			console.log(76, uri);
+			//console.log(76, uri);
 			res.redirect(301, uri);
 		});
 });
@@ -97,11 +98,9 @@ AcountLinkApp.post("/" + APP_URI + "/accesstoken**", (req, res) => {
 
 	const client_secret = req.body.client_secret;
 	const client_id = req.body.client_id;
-/*
-	console.log("accessToken");
-	console.log(req.query);
-	console.log(req.body);
-*/
+
+	console.log('Access Token :' + grantType)
+
 	if (grantType === "authorization_code") {
 		// 認証コード > Token
 		const authorize_code = req.body.code;
@@ -234,7 +233,7 @@ const refreshTokenToToken = (refresh_token, client_id, input_client_secret) => {
 	return new Promise(function(resolve, reject) {
 		getUidClientId_from_RefreshToken(refresh_token)
 		.then(function(res) {
-			console.log(237, res)
+			//console.log(237, res)
 			uid = res.uid;
 			if(res.client_id == client_id){
 				// 合致した > 削除
