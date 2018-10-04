@@ -438,7 +438,7 @@ const addAuthorizationCode = (uid, client_id) => {
 // ユーザーの Token をクリアする
 const clearToken = (uid, client_id) => {
 	let tokens;
-	return getTokenFrom(uid, client_id).then(function(_tokens) {
+	return getToken_from_UidClientId(uid, client_id).then(function(_tokens) {
 		//console.log(114, _tokens);
 		tokens = _tokens;
 		return deleteAuthorizationCode(tokens.authorization_code, client_id)
@@ -554,10 +554,8 @@ const deleteRefreshToken = refresh_token => {
 };
 
 // uid から Token 情報を取得する
-const getTokenFrom = (uid, client_id) => {
+const getToken_from_UidClientId = (uid, client_id) => {
 	return new Promise(function(resolve, reject) {
-		//console.log(390, uid, client_id);
-
 		dbRef
 			.child("users/" + uid + "/clients/" + client_id)
 			.once("value")
@@ -585,6 +583,89 @@ const getTokenFrom = (uid, client_id) => {
 			);
 	});
 };
+
+// ユーザーを削除する
+const removeUser = (uid) => {
+	return new Promise(function(resolve, reject) {
+		getClientlist_from_Uid(uid)
+		.then((client_ids)=>{
+			clearTokens_Looper(uid, client_ids)
+			.then(() => {
+				dbRef.child("users/" + uid).remove()
+				.then(() => {
+					console.log('delete user : ', uid)
+					resolve()
+				}, (error) => {
+					reject(error)
+				})
+			})
+		}, (error) => {
+			reject(error)
+		})
+	})
+}
+
+// クライアントをリストで削除
+const clearTokens_Looper = (uid, client_ids) => {
+	return new Promise(function(resolve, reject) {
+		const client_id = client_ids.pop()
+		console.log('delete client : ', client_id)
+
+		clearToken(uid, client_id)
+		.then(() => {
+			if(client_ids.length > 0){
+				clearTokens_Looper(uid, client_ids)
+				.then(() => {
+					resolve()
+				}, (error) => {
+					reject(error)
+				})
+			}else{
+				resolve()
+			}
+		},(error) => {
+			reject(error)
+		})
+	})
+} 
+
+// uid から Client のリストを返す
+const getClientlist_from_Uid = (uid) => {
+	return new Promise(function(resolve, reject) {
+		dbRef.child("users/" + uid + "/clients").once('value')
+		.then((snapshot) => {
+			if (snapshot.val()) {
+				const keys = Object.keys(snapshot.val())
+				resolve(keys)
+			}else{
+				resolve([])
+			}
+		}, (error) => {
+			reject(error)
+		})
+	})
+}
+
+// ユーザーを削除した時、関連データを削除
+AcountLinkApp.deleteUser = (uid) => {
+	return new Promise(function(resolve, reject) {
+		console.log('deleteUser @ Firebase oAuth2')
+		removeUser(uid)
+		.then(() => {
+			resolve()
+		}, (error) => {
+			reject(error)
+		})
+	});
+}
+
+// ユーザーを作成した時
+AcountLinkApp.createUser = (uid) => {
+	return new Promise(function(resolve, reject) {
+		console.log('createUser @ Firebase oAuth2')
+		resolve()
+	});
+}
 
 const a = (initializedFirebaseAdmin, _buildin_client = null, dbroot = "AcountLink") => {
 	admin = initializedFirebaseAdmin;
